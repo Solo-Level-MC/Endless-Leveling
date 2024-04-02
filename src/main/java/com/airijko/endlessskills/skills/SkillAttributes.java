@@ -51,24 +51,40 @@ public class SkillAttributes {
     }
 
     public double getModifiedValue(String attributeName, int level) {
+        double modifiedValue;
         switch (attributeName) {
             case "Life_Force":
-                return getAttributeValue(LIFE_FORCE_PATH, level);
+                modifiedValue = getAttributeValue(LIFE_FORCE_PATH, level);
+                break;
             case "Strength":
-                return getAttributeValue(STRENGTH_PATH, level);
-            case "Tenacity":
-                return getAttributeValue(TOUGHNESS_PATH, level)
-                        + getAttributeValue(KNOCK_BACK_RESISTANCE_PATH, level);
-            case "Haste":
-                return getAttributeValue(ATTACK_SPEED_PATH, level)
-                        + getAttributeValue(MOVEMENT_SPEED_PATH, level);
+                modifiedValue = getAttributeValue(STRENGTH_PATH, level);
+                break;
+            case "Toughness":
+                modifiedValue = getAttributeValue(TOUGHNESS_PATH, level);
+                break;
+            case "Knockback_Resistance":
+                modifiedValue = getAttributeValue(KNOCK_BACK_RESISTANCE_PATH, level);
+                break;
+            case "Attack_Speed":
+                modifiedValue = getAttributeValue(ATTACK_SPEED_PATH, level);
+                break;
+            case "Movement_Speed":
+                modifiedValue = getAttributeValue(MOVEMENT_SPEED_PATH, level);
+                break;
             case "Precision":
-                return getAttributeValue(PRECISION_PATH, level) / 100;
+                modifiedValue = getAttributeValue(PRECISION_PATH, level) / 100;
+                break;
             case "Ferocity":
-                return getAttributeValue(FEROCITY_PATH, level) / 100;
+                modifiedValue = getAttributeValue(FEROCITY_PATH, level) / 100;
+                break;
             default:
-                return 0.0;
+                modifiedValue = 0.0;
         }
+
+        // Log the attribute name and its modified value
+        Bukkit.getLogger().info("getModified Attribute Name: " + attributeName + ", Modified Value: " + modifiedValue);
+
+        return modifiedValue;
     }
 
     private static void resetAttribute(Player player, Attribute attribute, double value) {

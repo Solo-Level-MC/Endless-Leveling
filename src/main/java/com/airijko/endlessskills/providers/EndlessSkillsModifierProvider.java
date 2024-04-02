@@ -3,6 +3,7 @@ package com.airijko.endlessskills.providers;
 import com.airijko.endlesscore.interfaces.AttributeModifierInterface;
 import com.airijko.endlessskills.managers.PlayerDataManager;
 import com.airijko.endlessskills.skills.SkillAttributes;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -20,27 +21,22 @@ public class EndlessSkillsModifierProvider implements AttributeModifierInterface
 
     @Override
     public Map<String, Double> getModifiers(String attributeName, Player player) {
-        int level = playerDataManager.getAttributeLevel(player.getUniqueId(), attributeName);
-        Map<String, Double> attributeModifiers = new HashMap<>();
-
-        switch (attributeName) {
-            case "Tenacity":
-                attributeModifiers.put("Toughness", skillAttributes.getAttributeValue("skill_attributes.tenacity.toughness", level));
-                attributeModifiers.put("Knockback_Resistance", skillAttributes.getAttributeValue("skill_attributes.tenacity.knock_back_resistance", level));
-                break;
-            case "Haste":
-                attributeModifiers.put("Attack_Speed", skillAttributes.getAttributeValue("skill_attributes.haste.attack_speed", level));
-                attributeModifiers.put("Movement_Speed", skillAttributes.getAttributeValue("skill_attributes.haste.movement_speed", level));
-                break;
-            default:
-                attributeModifiers.put(attributeName, skillAttributes.getModifiedValue(attributeName, level));
-                break;
+        int level;
+        if ("Toughness".equals(attributeName) || "Knockback_Resistance".equals(attributeName)) {
+            level = playerDataManager.getAttributeLevel(player.getUniqueId(), "Tenacity");
+        } else if ("Attack_Speed".equals(attributeName) || "Movement_Speed".equals(attributeName)) {
+            level = playerDataManager.getAttributeLevel(player.getUniqueId(), "Haste");
+        } else {
+            level = playerDataManager.getAttributeLevel(player.getUniqueId(), attributeName);
         }
+        Map<String, Double> attributeModifiers = new HashMap<>();
+        attributeModifiers.put(attributeName, skillAttributes.getModifiedValue(attributeName, level));
 
         return attributeModifiers;
     }
 
+    @Override
     public Set<String> getAttributeNames() {
-        return new HashSet<>(Arrays.asList("Life_Force", "Strength",  "Tenacity", "Haste",  "Precision", "Ferocity"));
+        return new HashSet<>(Arrays.asList("Life_Force", "Strength", "Toughness", "Knockback_Resistance", "Movement_Speed", "Attack_Speed", "Precision", "Ferocity"));
     }
 }
