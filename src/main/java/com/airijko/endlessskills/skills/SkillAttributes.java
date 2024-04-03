@@ -81,9 +81,6 @@ public class SkillAttributes {
                 modifiedValue = 0.0;
         }
 
-        // Log the attribute name and its modified value
-        Bukkit.getLogger().info("getModified Attribute Name: " + attributeName + ", Modified Value: " + modifiedValue);
-
         return modifiedValue;
     }
 
